@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class LanguageSetter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Language currentLanguage;
+    
+    public void SetLanguage(Language lang)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currentLanguage = lang;
     }
 }
