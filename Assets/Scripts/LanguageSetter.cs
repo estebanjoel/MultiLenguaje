@@ -9,5 +9,6 @@ public class LanguageSetter : MonoBehaviour
     public void SetLanguage(Language lang)
     {
         currentLanguage = lang;
+        currentLanguage.texts = currentLanguage.FillDictionary(currentLanguage.keys, currentLanguage.values);
     }
 }

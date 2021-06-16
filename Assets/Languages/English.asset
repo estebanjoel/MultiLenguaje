@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7543f21c6c7db94fa3d6e1dc2444f62, type: 3}
   m_Name: English
   m_EditorClassIdentifier: 
-  language: 
-  keys: []
-  values: []
+  language: English
+  keys:
+  - 0_Start_Button
+  - 1_Option_Button
+  - 2_Exit_Button
+  values:
+  - Start
+  - Options
+  - Exit

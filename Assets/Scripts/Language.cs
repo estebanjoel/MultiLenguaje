@@ -8,7 +8,7 @@ public class Language : ScriptableObject
     //Nombre del lenguaje ex: español.
     public string language;
     //Diccionario con los textos y sus keys correspondientes.
-    public Dictionary<string, string> texts;
+    public Dictionary<string, string> texts = new Dictionary<string, string>();
     //Lista de las keys de los textos.
     public List<string> keys;
     //Lista de los textos.
@@ -21,20 +21,17 @@ public class Language : ScriptableObject
 
         if(llaves != null || valores != null)
         {
-            for (int i = 0; i < llaves.Count -1; i++)
+            for (int i = 0; i < llaves.Count; i++)
             {
                 textos.Add(llaves[i], valores[i]);
             }
         }
-
         return textos;
     }
 
     //Acá comenté un ejemplo usando la función de arriba, esto teniendo en cuenta que las listas estaban previamente llenas.
-    //public void Start()
-    //{
-    //    texts = new Dictionary<string, string>();
-
+    // public void Start()
+    // {
     //    texts = FillDictionary(keys, values);
-    //}
+    // }
 }
