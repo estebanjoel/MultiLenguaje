@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LanguageObject : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class LanguageObject : MonoBehaviour
     [Header("Affected Components")]
     public bool textUI;
     public bool buttonUI;
+    public bool textMeshPro;
+    public int keyIndex;
+    public int keyTypeIndex;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +32,12 @@ public class LanguageObject : MonoBehaviour
         {
             comp = transform.GetChild(0).GetComponent<Text>();
             comp.text = LanguageManager.instance.GetLanguageValue(key);
+        }
+        TextMeshProUGUI meshComp = null;;
+        if(textMeshPro)
+        {
+            meshComp = GetComponent<TextMeshProUGUI>();
+            meshComp.text = LanguageManager.instance.GetLanguageValue(key);
         }
     }
 }

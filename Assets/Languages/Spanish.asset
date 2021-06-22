@@ -17,7 +17,9 @@ MonoBehaviour:
   - 0_Start_Button
   - 1_Option_Button
   - 2_Exit_Button
+  - 3_MainMenu_Text
   values:
   - Iniciar
   - Opciones
   - Salir
+  - "Men\xFA Principal"
