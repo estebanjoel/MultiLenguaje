@@ -40,13 +40,19 @@ public class LanguageCustomEditor : Editor
         language.language = EditorGUILayout.TextField("Idioma", language.language);
         EditorGUILayout.Space();
 
+        EditorGUILayout.BeginVertical();
+
         SerializedObject so = new SerializedObject(language);
         SerializedProperty valuesProperty = so.FindProperty("values");
         SerializedProperty keysProperty = so.FindProperty("keys");
+        EditorGUILayout.BeginHorizontal();
+
         EditorGUILayout.PropertyField(valuesProperty, true);
         EditorGUILayout.PropertyField(keysProperty, true);
         so.ApplyModifiedProperties();
 
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
 
 
         //if (GUI.changed)//Si hicimos algun cambio en el editor...
