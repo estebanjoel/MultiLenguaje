@@ -88,6 +88,7 @@ public class LanguageCreatorWindow : EditorWindow
             GUILayout.Label("Add Language Scriptable Object", EditorStyles.boldLabel);
             EditorGUILayout.Space();
             newScriptableName = EditorGUILayout.TextField("New Language Name: ", newScriptableName);
+
             if(GUILayout.Button("Add Language"))
             {
                 if(newScriptableName == "")
@@ -102,6 +103,23 @@ public class LanguageCreatorWindow : EditorWindow
             }
             if(isScriptableNameEmpty) EditorGUILayout.HelpBox("Cannot create a Language Scriptable Object without a name!", MessageType.Warning);
             EditorGUILayout.EndVertical();
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUILayout.Label("Available Language Scriptable Objects", EditorStyles.boldLabel);
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            for (int i = 0; i < languages.Count; i++)
+            {
+                EditorGUILayout.BeginVertical();
+                EditorGUILayout.BeginHorizontal();
+                languageCheckboxes[i] = EditorGUILayout.BeginToggleGroup("", languageCheckboxes[i]);
+                if (languages[i] != null) languages[i] = (Language)EditorGUILayout.ObjectField(languages[i].name, languages[i], typeof(Language));
+                EditorGUILayout.EndToggleGroup();
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+            }
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space();
         }
 
         if(showDeleteLanguagePanel)
