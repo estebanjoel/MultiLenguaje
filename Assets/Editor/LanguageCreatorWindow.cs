@@ -73,11 +73,8 @@ public class LanguageCreatorWindow : EditorWindow
     {
         showAddLanguagePanel = addPanel;
         showDeleteLanguagePanel = deletePanel;
-        if(deletePanel)
-        {
-            languages = LanguageList();
-            languageCheckboxes = new bool[languages.Count];
-        }
+        languages = LanguageList();
+        if(deletePanel) languageCheckboxes = new bool[languages.Count];
     }
 
     private void HiddenPanels()
@@ -103,22 +100,26 @@ public class LanguageCreatorWindow : EditorWindow
             }
             if(isScriptableNameEmpty) EditorGUILayout.HelpBox("Cannot create a Language Scriptable Object without a name!", MessageType.Warning);
             EditorGUILayout.EndVertical();
-
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            GUILayout.Label("Available Language Scriptable Objects", EditorStyles.boldLabel);
             EditorGUILayout.Space();
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            for (int i = 0; i < languages.Count; i++)
+            if(languages.Count == 0)
             {
-                EditorGUILayout.BeginVertical();
-                EditorGUILayout.BeginHorizontal();
-                languageCheckboxes[i] = EditorGUILayout.BeginToggleGroup("", languageCheckboxes[i]);
-                if (languages[i] != null) languages[i] = (Language)EditorGUILayout.ObjectField(languages[i].name, languages[i], typeof(Language));
-                EditorGUILayout.EndToggleGroup();
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
+                EditorGUILayout.HelpBox("There must be at least one Language in order to show this panel!", MessageType.Warning);
             }
-            EditorGUILayout.EndVertical();
+            else
+            {
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                GUILayout.Label("Available Language Scriptable Objects", EditorStyles.boldLabel);
+                EditorGUILayout.Space();
+                for (int i = 0; i < languages.Count; i++)
+                {
+                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.BeginHorizontal();
+                    if (languages[i] != null) languages[i] = (Language)EditorGUILayout.ObjectField(languages[i].name, languages[i], typeof(Language));
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
+                }
+                EditorGUILayout.EndVertical();
+            }   
             EditorGUILayout.Space();
         }
 
