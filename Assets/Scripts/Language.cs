@@ -28,10 +28,4 @@ public class Language : ScriptableObject
         }
         return textos;
     }
-
-    //Acá comenté un ejemplo usando la función de arriba, esto teniendo en cuenta que las listas estaban previamente llenas.
-    // public void Start()
-    // {
-    //    texts = FillDictionary(keys, values);
-    // }
 }
