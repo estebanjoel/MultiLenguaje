@@ -34,21 +34,29 @@ public class LanguageCreatorWindow : EditorWindow
         GUILayout.Label("Language Creator", EditorStyles.boldLabel);
         EditorGUILayout.Space();
 
+
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         EditorGUILayout.LabelField("On this window you can create or delete Language ScriptableObjects.", guiMessageStyle);
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space();
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        GUILayout.Label("Available Language Scriptable Objects", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
+        ShowAvailableLanguages();
+        EditorGUILayout.Space();
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         GUILayout.Label("Add / Delete Language", EditorStyles.boldLabel);
         EditorGUILayout.Space();
         EditorGUILayout.BeginHorizontal();
 
-        if(GUILayout.Button("Add Language Scriptable Object"))
+        if(GUILayout.Button("Add Language Scriptable Object", GUILayout.MaxWidth(Screen.width/2)))
         {
             ShowHiddenPanels(true, false);
         }
-        if(GUILayout.Button("Delete Language Scriptable Object"))
+        if(GUILayout.Button("Delete Language Scriptable Object", GUILayout.MaxWidth(Screen.width/2)))
         {
             ShowHiddenPanels(false, true);
         }
@@ -105,21 +113,6 @@ public class LanguageCreatorWindow : EditorWindow
             {
                 EditorGUILayout.HelpBox("There must be at least one Language in order to show this panel!", MessageType.Warning);
             }
-            else
-            {
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                GUILayout.Label("Available Language Scriptable Objects", EditorStyles.boldLabel);
-                EditorGUILayout.Space();
-                for (int i = 0; i < languages.Count; i++)
-                {
-                    EditorGUILayout.BeginVertical();
-                    EditorGUILayout.BeginHorizontal();
-                    if (languages[i] != null) languages[i] = (Language)EditorGUILayout.ObjectField(languages[i].name, languages[i], typeof(Language));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.EndVertical();
-                }
-                EditorGUILayout.EndVertical();
-            }   
             EditorGUILayout.Space();
         }
 
@@ -139,9 +132,13 @@ public class LanguageCreatorWindow : EditorWindow
                 {
                     EditorGUILayout.BeginVertical();
                     EditorGUILayout.BeginHorizontal();
-                    languageCheckboxes[i] = EditorGUILayout.BeginToggleGroup("", languageCheckboxes[i]);
-                    if(languages[i]!= null) languages[i] = (Language)EditorGUILayout.ObjectField(languages[i].name, languages[i], typeof(Language));
-                    EditorGUILayout.EndToggleGroup();
+                    languageCheckboxes[i] = EditorGUILayout.Toggle(languageCheckboxes[i], GUILayout.MaxWidth(Screen.width/32));
+                    // languageCheckboxes[i] = EditorGUILayout.BeginToggleGroup("", languageCheckboxes[i]);
+                    GUIStyle selectedColor = new GUIStyle(EditorStyles.textField);
+                    if(languageCheckboxes[i]) selectedColor.normal.textColor = Color.blue;
+                    else selectedColor.normal.textColor = Color.black;
+                    if(languages[i]!= null) EditorGUILayout.LabelField(languages[i].name,selectedColor);
+                    // EditorGUILayout.EndToggleGroup();
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndVertical();
                 }
@@ -160,6 +157,18 @@ public class LanguageCreatorWindow : EditorWindow
         }
     }
 
+    private void ShowAvailableLanguages()
+    {
+        languages = LanguageList();
+        for (int i = 0; i < languages.Count; i++)
+        {
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginHorizontal();
+            if (languages[i] != null) EditorGUILayout.LabelField("° " + languages[i].name);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+        }
+    }
 
     private static T CreateScriptableButton<T>(string path, string fileName) where T : ScriptableObject
     {
