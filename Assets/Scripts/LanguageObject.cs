@@ -17,27 +17,27 @@ public class LanguageObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetLanguageObject();
+        SetLanguageObject(LanguageManager.instance);
     }
 
-    private void SetLanguageObject()
+    public void SetLanguageObject(LanguageManager languageManager)
     {
         Text comp = null;
         if(textUI)
         {
             comp = GetComponent<Text>();
-            comp.text = LanguageManager.instance.GetLanguageValue(key);
+            comp.text = languageManager.GetLanguageValue(key);
         }
         if(buttonUI)
         {
             comp = transform.GetChild(0).GetComponent<Text>();
-            comp.text = LanguageManager.instance.GetLanguageValue(key);
+            comp.text = languageManager.GetLanguageValue(key);
         }
         TextMeshProUGUI meshComp = null;;
         if(textMeshPro)
         {
             meshComp = GetComponent<TextMeshProUGUI>();
-            meshComp.text = LanguageManager.instance.GetLanguageValue(key);
+            meshComp.text = languageManager.GetLanguageValue(key);
         }
     }
 }
