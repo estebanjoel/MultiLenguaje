@@ -9,6 +9,7 @@ public class LanguageCustomEditor : Editor
     Language language;
     GUIStyle titleStyle;
     GUIStyle labelStyle;
+    bool displayError = false;
 
     private void OnEnable()
     {
@@ -31,7 +32,7 @@ public class LanguageCustomEditor : Editor
         //Pregunta si el juego está andando para que no se hagan modificaciones y luego se pierdan
         if (Application.isPlaying)
         {
-            EditorGUILayout.HelpBox("El juego está andando, no edites los valores.", MessageType.Warning);
+            EditorGUILayout.HelpBox("The game is in Play, modify fields with caution.", MessageType.Warning);
         }
 
         //Imprimo el título del custom editor
@@ -42,14 +43,60 @@ public class LanguageCustomEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 
-        //Muestro el nombre del idioma en cuestión e igualo el tamaño de las listas al keysAndValuesSize.
+        //Muestro el nombre del idioma en cuestión.
         language.language = EditorGUILayout.TextField("Idioma", language.language);
+
+        //Pregunto si el idioma no tiene keys o values y en caso de ser verdadero le agrego 1 valor vacio a cada uno.
+        if(language.keys == null && language.values == null)
+        {
+            language.keys = new List<string>();
+            language.values = new List<string>();
+            language.keys.Add("");
+            language.values.Add("");
+        }
+
+        //Asigno el valor de tamaño de las listas al keysAndValues.
         keysAndValuesSize = language.keys.Count;
         EditorGUILayout.Space();
-
-        //Muestro el size de las listas.
+        
         EditorGUILayout.BeginVertical();
-        keysAndValuesSize = EditorGUILayout.IntField("Size", keysAndValuesSize);
+        EditorGUI.BeginChangeCheck();//Chequeo si modificaron el size para aumentar o disminuir la lista.
+
+        if (displayError)
+        {
+            EditorGUILayout.HelpBox("Please write a value greater than 0.", MessageType.Error);
+        }
+
+        keysAndValuesSize = EditorGUILayout.IntField("Size", keysAndValuesSize);//Muestro el size de las listas.
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (keysAndValuesSize <= 0)//En caso de cambiar el valor a numeros menores que 1, indico que no es posible cambiar el tamaño.
+            {
+                displayError = true;
+            }
+            else if (keysAndValuesSize > language.keys.Count)//Si el valor es mayor, agrego los elementos necesarios en las listas.
+            {
+                displayError = false;
+                int extraValue = keysAndValuesSize - language.keys.Count;
+                for (int i = 0; i < extraValue; i++)
+                {
+                    language.keys.Add("");
+                    language.values.Add("");
+                }
+            }
+            else if (keysAndValuesSize < language.keys.Count)//Si el valor es menor, remuevo los ultimos elementos necesarios en las listas.
+            {
+                displayError = false;
+                int extraValue = language.keys.Count - keysAndValuesSize;
+                for (int i = 0; i < extraValue; i++)
+                {
+                    language.keys.Remove("");
+                    language.values.Remove("");
+                }
+            }
+        }
+
         EditorGUILayout.Space();
 
         //Serializo el scriptableObject
@@ -77,8 +124,6 @@ public class LanguageCustomEditor : Editor
 
         EditorGUILayout.EndVertical();
 
-        //EditorGUILayout.PropertyField(valuesProperty, true);
-        //EditorGUILayout.PropertyField(keysProperty, true);
         so.ApplyModifiedProperties();
 
         EditorGUILayout.EndVertical();
