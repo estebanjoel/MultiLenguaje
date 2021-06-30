@@ -18,21 +18,23 @@ public class DropdownLanguagesManager : MonoBehaviour
         myDropDown = GetComponent<TMP_Dropdown>();
 
         myLanguages = LanguageList();
-        fillDropDown(myLanguages, myDropDown);
+        FillDropDown(myLanguages, myDropDown);
 
         //Hago un for inicial que llena el dropdown con los lenguajes disponibles y asigna el que esté activo.
-        for (int i = 0; i < myDropDown.options.Count; i++)
-        {
-            if(myLanguageManager.languageSetter.currentLanguage.language == myDropDown.options[i].text)
-            {
-                myDropDown.SetValueWithoutNotify(i);
-            }
-        }
+        SetValue(myLanguageManager.languageSetter.currentLanguage.language, myDropDown);
 
         //Hago un evento que detecta cuando se cambia el valor del dropdown para que llame a una función.
         myDropDown.onValueChanged.AddListener(delegate {
             DropdownValueChanged(myLanguages[myDropDown.value]);
         });
+    }
+
+    void Update()
+    {
+        if(myLanguageManager.languageSetter.currentLanguage.language != myDropDown.options[myDropDown.value].text)
+        {
+            SetValue(myLanguageManager.languageSetter.currentLanguage.language, myDropDown);
+        }
     }
 
     private void DropdownValueChanged(Language newCurrentLanguage)
@@ -57,12 +59,23 @@ public class DropdownLanguagesManager : MonoBehaviour
         return myLanguages;
     }
 
-    private void fillDropDown(List<Language> languages, TMP_Dropdown dropDown)
+    private void FillDropDown(List<Language> languages, TMP_Dropdown dropDown)
     {
         dropDown.options.Clear();
         foreach (var language in languages)
         {
             dropDown.options.Add(new TMP_Dropdown.OptionData() { text = language.language });
+        }
+    }
+
+    private void SetValue(string languageName, TMP_Dropdown dropDown)
+    {
+        for (int i = 0; i < dropDown.options.Count; i++)
+        {
+            if (languageName == dropDown.options[i].text)
+            {
+                dropDown.SetValueWithoutNotify(i);
+            }
         }
     }
 }
