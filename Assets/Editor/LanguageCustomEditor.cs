@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 [CustomEditor(typeof(Language))]
 public class LanguageCustomEditor : Editor
@@ -143,6 +144,11 @@ public class LanguageCustomEditor : Editor
         }
 
         EditorGUILayout.EndVertical();
+
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(language);
+        }
 
         so.ApplyModifiedProperties();
 
