@@ -115,9 +115,29 @@ public class LanguageCustomEditor : Editor
         //Muestro los strings uno al lado del otro con textfield.
         for (int i = 0; i < keysAndValuesSize; i++)
         {
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.TextField("", language.keys[i]);
-            EditorGUILayout.TextField("", language.values[i]);
+            string key = EditorGUILayout.TextField("", language.keys[i]);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                if(key != language.keys[i])
+                {
+                    language.keys[i] = key;
+                }
+            }
+
+            EditorGUI.BeginChangeCheck();
+            string value = EditorGUILayout.TextField("", language.values[i]);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                if (value != language.values[i])
+                {
+                    language.values[i] = value;
+                }
+            }
+
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
         }
